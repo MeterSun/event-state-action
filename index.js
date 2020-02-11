@@ -45,12 +45,14 @@ class ESA {
     }
     subscribe(eventName, callback) {
         const name = new EventStateName(eventName);
+        let removehandle;
         if (name.stateName && !this.root.findChildNode(name.stateName)) throw new Error(`State '${name.stateName}' is not initialized`);
         this.root.recursionChildFirst(function () {
             if (PathCompare.equal(this.path, name.path)) {
-                this.root.addAction(name.tagName, callback);
+                removehandle = this.root.addAction(name.tagName, callback);
             }
         });
+        return removehandle;
     }
     get(stateName) {
         let result;
