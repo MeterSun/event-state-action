@@ -20,14 +20,12 @@ class ESA {
         const name = new EventStateName(eventName);
         const esa = this;
         this.root.recursionChildFirst(function () {
-            if (name.tagName === '[@all]' && PathCompare.ArootBchild(this.path, name.path)) {
-                this.root.exec(name.tagName, param)
-            }
             if (PathCompare.equal(this.path, name.path)) {
                 this.root.exec(name.tagName, param);
                 esa.isRunningSubscribeAction = false;
-                // } else if (PathCompare.ArootBchild(this.path, name.path)) {
-                //     this.root.exec(param);
+            }
+            if (PathCompare.ArootBchild(this.path, name.path)) {
+                this.root.exec('[@child]');
             }
             esa.runPublishList();
         });
